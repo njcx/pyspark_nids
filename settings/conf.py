@@ -3,9 +3,6 @@
 # @Email   : njcx86@gmail.com
 
 
-kafkaParams = {"metadata.broker.list": "172.21.129.2:9092"}
-NidsAlertTopic = "nids_alert"
-
 RedisHost = '172.21.129.2'
 RedisPort = 6379
 RedisPasswd = 'MAAp6aU6bG'
@@ -39,4 +36,8 @@ RedisGroupId = "nids-redis"
 RedisTopic = "nids-redis"
 
 Log_Path = '/tmp/'
+
+NidsAlertTopic = "nids_alert"
+kafkaParams = {"metadata.broker.list": "172.21.129.2:9092"}
+
 
