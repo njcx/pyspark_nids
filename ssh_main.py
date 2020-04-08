@@ -11,6 +11,29 @@ from utils import json_to_py
 
 offsets = []
 
+checkpointDirectory = "/tmp"
+
+
+def functionToCreateContext():
+    sc = SparkContext(appName='sec-' + SSHTopic, )
+    ssc = StreamingContext(sc, 2)
+
+    # lines = ssc.socketTextStream(...)  # create DStreams
+    # ...
+
+    msg_stream = KafkaUtils.createDirectStream(ssc, [SSHTopic],
+                                               kafkaParams=dict(kafkaParams, **{"group.id": SSHGroupId}))
+
+    result = msg_stream.map(lambda x: json_to_py(x[1]))
+    msg_stream.transform(store_offset, ).foreachRDD(print_offset)
+    result.pprint()
+
+    ssc.checkpoint(checkpointDirectory)  # set checkpoint directory
+    return ssc
+
+
+context = StreamingContext.getOrCreate(checkpointDirectory, functionToCreateContext)
+
 
 def out_put(m):
     print(m)
@@ -36,8 +59,8 @@ ssc = StreamingContext(sc, 2)
 
 msg_stream = KafkaUtils.createDirectStream(ssc, [SSHTopic],
                                            kafkaParams=dict(kafkaParams, **{"group.id": SSHGroupId}))
-result = msg_stream.map(lambda x: json_to_py(x[1]))
-msg_stream.transform(store_offset, ).foreachRDD(print_offset)
-result.pprint()
-ssc.start()
-ssc.awaitTermination()
+
+
+
+context.start()
+context.awaitTermination()
