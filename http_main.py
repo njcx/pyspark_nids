@@ -3,7 +3,7 @@
 # @Email   : njcx86@gmail.com
 
 from pyspark import SparkContext
-from pyspark import SparkConf
+# from pyspark import SparkConf
 from pyspark.streaming import StreamingContext
 from pyspark.streaming.kafka import KafkaUtils
 from settings import kafkaParams, HTTPGroupId, HTTPTopic
@@ -29,7 +29,7 @@ def print_offset(rdd):
 
 # KafkaUtils.createStream(ssc, zkQuorum, "spark-streaming-consumer", {topic: 1})
 
-config = SparkConf()
+# config = SparkConf()
 scontext = SparkContext(appName='sec-' + HTTPTopic, )
 stream_context = StreamingContext(scontext, 2)
 msg_stream = KafkaUtils.createDirectStream(stream_context, [HTTPTopic],

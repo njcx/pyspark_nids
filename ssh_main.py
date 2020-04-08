@@ -3,7 +3,7 @@
 # @Email   : njcx86@gmail.com
 
 from pyspark import SparkContext
-from pyspark import SparkConf
+# from pyspark import SparkConf
 from pyspark.streaming import StreamingContext
 from pyspark.streaming.kafka import KafkaUtils
 from settings import kafkaParams, SSHGroupId, SSHTopic
@@ -29,10 +29,10 @@ def print_offset(rdd):
 
 # KafkaUtils.createStream(ssc, zkQuorum, "spark-streaming-consumer", {topic: 1})
 
-config = SparkConf()
+# config = SparkConf()
 scontext = SparkContext(appName='sec-' + SSHTopic, )
 stream_context = StreamingContext(scontext, 2)
-print kafkaParams.update({"group.id": SSHGroupId})
+# print kafkaParams.update({"group.id": SSHGroupId})
 
 msg_stream = KafkaUtils.createDirectStream(stream_context, [SSHTopic],
                                            kafkaParams=dict(kafkaParams, **{"group.id": SSHGroupId}))
