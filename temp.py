@@ -28,7 +28,7 @@ def create_context():
     # sc = SparkContext(appName='sec-' + SSHTopic, )
     ssc = StreamingContext(sc, 1)
 
-    # lines = ssc.socketTextStream(...)  # create DStreams
+
     # ...
 
     msg_stream = KafkaUtils.createDirectStream(ssc, [SSHTopic],
