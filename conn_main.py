@@ -30,12 +30,12 @@ def print_offset(rdd):
 # KafkaUtils.createStream(ssc, zkQuorum, "spark-streaming-consumer", {topic: 1})
 
 # config = SparkConf()
-scontext = SparkContext(appName="sec-"+ConnTopic, )
-stream_context = StreamingContext(scontext, 2)
-msg_stream = KafkaUtils.createDirectStream(stream_context, [ConnTopic],
+sc = SparkContext(appName="sec-"+ConnTopic, )
+ssc = StreamingContext(sc, 2)
+msg_stream = KafkaUtils.createDirectStream(ssc, [ConnTopic],
                                            kafkaParams=dict(kafkaParams, **{"group.id": ConnGroupId}))
 result = msg_stream.map(lambda x: json_to_py(x[1]))
 msg_stream.transform(store_offset, ).foreachRDD(print_offset)
 result.pprint()
-stream_context.start()
-stream_context.awaitTermination()
+ssc.start()
+ssc.awaitTermination()
