@@ -18,11 +18,6 @@ def create_context():
 
     sc_conf = SparkConf()
     sc_conf.setAppName('sec-' + SSHTopic)
-    sc_conf.set('spark.executor.memory', '2g')
-    sc_conf.set("spark.executor.cores", 4)
-    sc_conf.set('spark.cores.max', 4)  # spark.cores.max：为一个application分配的最大cpu核心数，如果没有设置这个值默认为spark.deploy.defaultCores
-    # sc_conf.set('spark.logConf', True)  # 当SparkContext启动时，将有效的SparkConf记录为INFO。
-
     sc = SparkContext(conf=sc_conf)
 
     # sc = SparkContext(appName='sec-' + SSHTopic, )
@@ -44,7 +39,7 @@ def create_context():
     return ssc
 
 
-context = StreamingContext.getOrCreate(checkpointDirectory, create_context)
+ssc = StreamingContext.getOrCreate(checkpointDirectory, create_context)
 
 #
 # def out_put(m):
@@ -72,5 +67,5 @@ context = StreamingContext.getOrCreate(checkpointDirectory, create_context)
 # msg_stream = KafkaUtils.createDirectStream(ssc, [SSHTopic],
 #                                            kafkaParams=dict(kafkaParams, **{"group.id": SSHGroupId}))
 
-context.start()
-context.awaitTermination()
+ssc.start()
+ssc.awaitTermination()
