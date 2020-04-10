@@ -13,6 +13,7 @@ from utils import  KafkaTools
 def send_partition(iter):
     kafka_utils =KafkaTools(kafkaParams["metadata.broker.list"])
     for record in iter:
+        kafka_utils.produce(topic_name,
         connection.send(record)
     # return to the pool for future reuse
     ConnectionPool.returnConnection(connection)

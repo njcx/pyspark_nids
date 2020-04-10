@@ -10,17 +10,17 @@ logger = Logger.get_logger(__name__)
 
 class KafkaTools(object):
 
-    def __init__(self, BROKER_URL):
-        self.BROKER_URL = BROKER_URL
+    def __init__(self, BrokerUrl):
+        self.BrokerUrl = BrokerUrl
 
     def produce(self, topic_name, msg):
-        p = Producer({"bootstrap.servers": self.BROKER_URL})
+        p = Producer({"bootstrap.servers": self.BrokerUrl})
         p.produce(topic_name, msg)
         p.flush()
 
     def consume(self, topic_name, group_id="sec-nids"):
         c = Consumer(
-            {"bootstrap.servers": self.BROKER_URL, "group.id": group_id,
+            {"bootstrap.servers": self.BrokerUrl, "group.id": group_id,
              'enable.auto.commit': True,
              'default.topic.config': {'auto.offset.reset': 'latest'}})
         c.subscribe([topic_name])
@@ -29,11 +29,11 @@ class KafkaTools(object):
 
 if __name__ == "__main__":
 
-    BROKER_URL = "PLAINTEXT://172.21.129.2:9092"
-    TOPIC_NAME = "nids-http"
+    BrokerUrl = "PLAINTEXT://172.21.129.2:9092"
+    TopicName = "nids-http"
 
-    test = KafkaTools(BROKER_URL=BROKER_URL)
-    c = test.consume(topic_name=TOPIC_NAME)
+    test = KafkaTools(BrokerUrl=BrokerUrl)
+    c = test.consume(topic_name=TopicName)
 
     while True:
         message = c.poll(10)
