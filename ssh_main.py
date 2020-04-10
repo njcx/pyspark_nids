@@ -22,20 +22,32 @@ check_point_dir = "/tmp/spark_check_point"
 #
 # context = StreamingContext.getOrCreate(checkpointDirectory, functionToCreateContext)
 
+def sendPartition(iter):
+    # ConnectionPool is a static, lazily initialized pool of connections
+    connection = ConnectionPool.getConnection()
+    for record in iter:
+        connection.send(record)
+    # return to the pool for future reuse
+    ConnectionPool.returnConnection(connection)
 
-def out_put(m):
-    print(m)
+dstream.foreachRDD(lambda rdd: rdd.foreachPartition(sendPartition))
 
 
-def store_offset(rdd):
-    global offsets
-    offsets = rdd.offsetRanges()
-    return rdd
 
 
-def print_offset(rdd):
-    for o in offsets:
-        print "%s %s %s %s %s" % (o.topic, o.partition, o.fromOffset, o.untilOffset, o.untilOffset - o.fromOffset)
+# def out_put(m):
+#     print(m)
+#
+#
+# def store_offset(rdd):
+#     global offsets
+#     offsets = rdd.offsetRanges()
+#     return rdd
+#
+#
+# def print_offset(rdd):
+#     for o in offsets:
+#         print "%s %s %s %s %s" % (o.topic, o.partition, o.fromOffset, o.untilOffset, o.untilOffset - o.fromOffset)
 
 
 # KafkaUtils.createStream(ssc, zkQuorum, "spark-streaming-consumer", {topic: 1})
