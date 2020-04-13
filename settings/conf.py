@@ -43,4 +43,6 @@ NidsAlertTopic = "nids_alert"
 
 KafkaParams = {"metadata.broker.list": "172.21.129.2:9092"}
 
+SparkLogLevel = "WARN"
+
 

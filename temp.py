@@ -6,44 +6,27 @@ from pyspark import SparkContext
 from pyspark import SparkConf
 from pyspark.streaming import StreamingContext
 from pyspark.streaming.kafka import KafkaUtils
-from settings import KafkaParams, SSHGroupId, SSHTopic, CheckPointDir, NidsAlertTopic
+from settings import KafkaParams, SSHGroupId, SSHTopic, CheckPointDir, NidsAlertTopic, SparkLogLevel
 from utils import json_to_py
-from utils import  KafkaTools
+from utils import KafkaTools
 
 
 rules = []
 
 
 def send_partition(iter):
-
     kafka_utils =KafkaTools(KafkaParams["metadata.broker.list"])
 
     for record in iter:
-
         kafka_utils.produce(NidsAlertTopic, record)
-        # connection.send(record)
-    # return to the pool for future reuse
-    # ConnectionPool.returnConnection(connection)
-#
-#
-# def line_check(line):
-#
-#
-# def rdd_check(rdd):
-#
-#     rdd_ = rdd.cache()
-#
-#     for rule in rules:
-#
-#         rdd_.filter(rule)
-
-# def json_ds():
 
 
 def create_context():
     sc_conf = SparkConf()
     sc_conf.setAppName('sec-' + SSHTopic)
     sc = SparkContext(conf=sc_conf)
+    sc.setLogLevel(SparkLogLevel)
+
     ssc = StreamingContext(sc, 5)
     msg_stream = KafkaUtils.createDirectStream(ssc, [SSHTopic],
                                                kafkaParams=dict(KafkaParams, **{"group.id": SSHGroupId}))

@@ -12,17 +12,18 @@ class KafkaTools(object):
 
     def __init__(self, BrokerUrl):
         self.BrokerUrl = BrokerUrl
+        self.p = Producer({"bootstrap.servers": self.BrokerUrl})
 
     def produce(self, topic_name, msg):
-        p = Producer({"bootstrap.servers": self.BrokerUrl})
-        p.produce(topic_name, msg)
-        p.flush()
+        self.p.produce(topic_name, msg)
+        self.p.flush()
 
     def consume(self, topic_name, group_id="sec-nids"):
         c = Consumer(
             {"bootstrap.servers": self.BrokerUrl, "group.id": group_id,
              'enable.auto.commit': True,
              'default.topic.config': {'auto.offset.reset': 'latest'}})
+
         c.subscribe([topic_name])
         return c
 
@@ -30,9 +31,10 @@ class KafkaTools(object):
 if __name__ == "__main__":
 
     BrokerUrl = "PLAINTEXT://172.21.129.2:9092"
-    TopicName = "nids-http"
+    TopicName = "nids_alert"
 
     test = KafkaTools(BrokerUrl=BrokerUrl)
+
     c = test.consume(topic_name=TopicName)
 
     while True:
