@@ -6,7 +6,7 @@ from pyspark import SparkContext
 # from pyspark import SparkConf
 from pyspark.streaming import StreamingContext
 from pyspark.streaming.kafka import KafkaUtils
-from settings import kafkaParams, DNSGroupId, DNSTopic
+from settings import KafkaParams, DNSGroupId, DNSTopic
 from utils import json_to_py
 
 offsets = []
@@ -33,7 +33,7 @@ def print_offset(rdd):
 sc = SparkContext(appName="sec-" + DNSTopic, )
 ssc = StreamingContext(sc, 2)
 msg_stream = KafkaUtils.createDirectStream(ssc, [DNSTopic],
-                                           kafkaParams=dict(kafkaParams, **{"group.id": DNSGroupId}))
+                                           kafkaParams=dict(KafkaParams, **{"group.id": DNSGroupId}))
 result = msg_stream.map(lambda x: json_to_py(x[1]))
 msg_stream.transform(store_offset, ).foreachRDD(print_offset)
 result.pprint()

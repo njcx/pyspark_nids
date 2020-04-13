@@ -6,17 +6,18 @@ from pyspark import SparkContext
 from pyspark import SparkConf
 from pyspark.streaming import StreamingContext
 from pyspark.streaming.kafka import KafkaUtils
-from settings import kafkaParams, SSHGroupId, SSHTopic, CheckPointDir
+from settings import KafkaParams, SSHGroupId, SSHTopic, CheckPointDir,NidsAlertTopic
 from utils import json_to_py
 from utils import  KafkaTools
 
 def send_partition(iter):
-    kafka_utils =KafkaTools(kafkaParams["metadata.broker.list"])
+    kafka_utils =KafkaTools(KafkaParams["metadata.broker.list"])
+
     for record in iter:
-        kafka_utils.produce(topic_name,
-        connection.send(record)
+        kafka_utils.produce(NidsAlertTopic,record)
+        # connection.send(record)
     # return to the pool for future reuse
-    ConnectionPool.returnConnection(connection)
+    # ConnectionPool.returnConnection(connection)
 
 
 
@@ -35,7 +36,7 @@ def create_context():
     sc = SparkContext(conf=sc_conf)
     ssc = StreamingContext(sc, 5)
     msg_stream = KafkaUtils.createDirectStream(ssc, [SSHTopic],
-                                               kafkaParams=dict(kafkaParams, **{"group.id": SSHGroupId}))
+                                               kafkaParams=dict(KafkaParams, **{"group.id": SSHGroupId}))
     msg_stream.checkpoint(20)
     result = msg_stream.map(lambda x: json_to_py(x[1]))
 
@@ -44,7 +45,6 @@ def create_context():
     result.pprint()
     ssc.checkpoint(CheckPointDir)
     return ssc
-
 
 ssc = StreamingContext.getOrCreate(CheckPointDir, create_context)
 ssc.start()

@@ -6,7 +6,7 @@ from pyspark import SparkContext
 # from pyspark import SparkConf
 from pyspark.streaming import StreamingContext
 from pyspark.streaming.kafka import KafkaUtils
-from settings import kafkaParams, SSHGroupId, SSHTopic
+from settings import KafkaParams, SSHGroupId, SSHTopic
 from utils import json_to_py
 
 offsets = []
@@ -62,7 +62,7 @@ ssc.checkpoint(check_point_dir)
 # ...
 
 msg_stream = KafkaUtils.createDirectStream(ssc, [SSHTopic],
-                                           kafkaParams=dict(kafkaParams, **{"group.id": SSHGroupId}))
+                                           kafkaParams=dict(KafkaParams, **{"group.id": SSHGroupId}))
 
 result = msg_stream.map(lambda x: json_to_py(x[1]))
 msg_stream.transform(store_offset, ).foreachRDD(print_offset)

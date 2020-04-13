@@ -40,6 +40,7 @@ Log_Path = '/tmp/'
 CheckPointDir = "/tmp/spark_check_point"
 
 NidsAlertTopic = "nids_alert"
-kafkaParams = {"metadata.broker.list": "172.21.129.2:9092"}
+
+KafkaParams = {"metadata.broker.list": "172.21.129.2:9092"}
 
 
