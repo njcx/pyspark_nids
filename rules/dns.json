@@ -11,7 +11,9 @@
               {
                  "field" : "network.ip",
                   "type": "re",
-                  "rule":"xxx"
+                  "rule":"xxx",
+                  "upper_lowercase": "False"
+
               },
 
               {
@@ -50,7 +52,8 @@
                 {
                  "field" : "network.ip",
                   "type": "re",
-                  "rule":"xxx"
+                  "rule":"xxx",
+                  "upper_lowercase": "False"
               },
 
                 {
@@ -85,7 +88,8 @@
                 {
                  "field" : "network.ip",
                   "type": "re",
-                  "rule":"xxx"
+                  "rule":"xxx",
+                  "upper_lowercase": "True"
               },
 
                 {
@@ -119,4 +123,4 @@
               "e-mail": ["xxx","xxx"]
         }
 
-]
+  ]
