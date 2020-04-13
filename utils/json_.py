@@ -46,6 +46,16 @@ def json_write_to_file(path, json_str=None, py_data_struct=None):
         return False
 
 
+def json_file_to_py(path):
+    import json
+    try:
+        with open(path, 'r') as load_f:
+            return json.load(load_f)
+    except Exception as e:
+        logger.error(str(e))
+        return {}
+
+
 if __name__ == '__main__':
 
     data = {

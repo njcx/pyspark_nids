@@ -45,4 +45,6 @@ KafkaParams = {"metadata.broker.list": "172.21.129.2:9092"}
 
 SparkLogLevel = "WARN"
 
+NidsHome = "/Users/njcx/Documents/nids_sec"
+
 
