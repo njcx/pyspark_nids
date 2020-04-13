@@ -13,15 +13,22 @@ class Engine(object):
         self.rule_type = rule_type
         self.rules = self.read_rules()
 
+        print self.rule_type
+        print self.rules
+
     def read_rules(self):
         try:
+
             return json_file_to_py("{0}/rules/{1}.json".format(NidsHome, self.rule_type.lower()))
         except Exception as e:
             logger.error(str(e))
             return {}
 
+    def check_line(self):
 
+        pass
 
+    def
 
 
 if __name__ == '__main__':
