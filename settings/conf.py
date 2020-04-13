@@ -35,7 +35,7 @@ ICMPTopic = "nids-icmp"
 RedisGroupId = "nids-redis"
 RedisTopic = "nids-redis"
 
-Log_Path = '/tmp/'
+LogPath = '/tmp/'
 
 CheckPointDir = "/tmp/spark_check_point"
 

@@ -3,13 +3,13 @@
 # @Email   : njcx86@gmail.com
 
 import time
-from settings import Log_Path
+from settings import LogPath
 import logging.handlers
 
 
 class Logger(object):
     now = time.strftime('%Y-%m-%d')
-    log_file = Log_Path + 'sec-nids-' + now + '.log'
+    log_file = LogPath + 'sec-nids-' + now + '.log'
     log_level = logging.DEBUG
     log_max_byte = 100 * 1024 * 1024;
     log_backup_count = 10
