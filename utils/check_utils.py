@@ -16,6 +16,7 @@ logger = Logger.get_logger(__name__)
 class CheckUtil(object):
 
     def __init__(self, rule):
+
         self.rule_ = rule
 
     def res_parser(self, res, field):
@@ -73,6 +74,10 @@ class CheckUtil(object):
 
                 if detect_item['type'] == 're' and detect_item['ignorecase'] == "False":
                     if self.check_re(self.res_parser(data, detect_item['field']), detect_item['rule']):
+                        match_conut = match_conut + 1
+
+                if detect_item['type'] == 're' and detect_item['ignorecase'] == "True":
+                    if self.check_re(self.res_parser(data, detect_item['field']), detect_item['rule'], I=True):
                         match_conut = match_conut + 1
 
                 if detect_item['type'] == 'equal':
