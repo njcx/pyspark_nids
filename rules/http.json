@@ -12,7 +12,7 @@
                  "field" : "network.ip",
                   "type": "re",
                   "rule":"xxx",
-                  "upper_lowercase": "False"
+                  "ignorecase": "False"
 
               },
 
@@ -53,7 +53,7 @@
                  "field" : "network.ip",
                   "type": "re",
                   "rule":"xxx",
-                  "upper_lowercase": "False"
+                 "ignorecase": "False"
               },
 
                 {
@@ -88,8 +88,8 @@
                 {
                  "field" : "network.ip",
                   "type": "re",
-                  "rule":"xxx",
-                  "upper_lowercase": "True"
+                  "rule": "xxx",
+                  "ignorecase": "False"
               },
 
                 {
