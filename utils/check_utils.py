@@ -16,15 +16,12 @@ logger = Logger.get_logger(__name__)
 class CheckUtil(object):
 
     def __init__(self, rule):
-
         self.rule_ = rule
 
     def res_parser(self, res, field):
-
         try:
             if field in res:
                 return str(res[field]).strip()
-
             else:
                 temp_ = field.split('.')
                 for _ in temp_:
@@ -50,13 +47,11 @@ class CheckUtil(object):
             return False
 
     def check_re(self, res, pattern, I=False):
-
         try:
             if I:
                 re_utils = re.compile(pattern, re.I)
                 return re_utils.search(str(res).strip())
             else:
-
                 re_utils = re.compile(pattern)
                 return re_utils.search(str(res).strip())
         except Exception as e:
@@ -70,7 +65,7 @@ class CheckUtil(object):
             for detect_item in self.rule_['detect_list']:
                 if detect_item['type'] == 'in':
                     if self.check_in(self.res_parser(data, detect_item['field']), detect_item['rule']):
-                        match_conut = match_conut +1
+                        match_conut = match_conut + 1
 
                 if detect_item['type'] == 're' and detect_item['ignorecase'] == "False":
                     if self.check_re(self.res_parser(data, detect_item['field']), detect_item['rule']):

@@ -14,7 +14,6 @@ class Engine(object):
         self.rule_type = rule_type
         self.rules_func_list = self.rules_to_func_list()
 
-        print self.rules_func_list
 
     def read_rules(self):
         try:
@@ -38,9 +37,7 @@ class Engine(object):
             return {}
 
     def check_line(self, data):
-
         for rule_func in self.rules_func_list:
-
             print rule_func.check_res(data)
 
 
@@ -49,7 +46,7 @@ if __name__ == '__main__':
 
     data = {
       "ts": 1586852099.89234,
-      "id.resp_h": "10.10.252.121",
+      "id.resp_h": "10.18.252.121",
       "uid": "CtJwAA2XWyrbnfKztd",
       "id.resp_p": 22,
       "auth_attempts": 0,
