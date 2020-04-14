@@ -3,7 +3,7 @@
 # @Email   : njcx86@gmail.com
 
 from utils.json_ import json_file_to_py
-# from utils.check_utils import check_in, check_re, check_equal, res_parser
+from utils.check_utils import CheckUtil
 from utils.log_ import Logger
 from settings import NidsHome
 logger = Logger.get_logger(__name__)
@@ -14,6 +14,7 @@ class Engine(object):
         self.rule_type = rule_type
         self.rules_func_list = self.rules_to_func_list()
 
+        print self.rules_func_list
 
     def read_rules(self):
         try:
@@ -22,45 +23,49 @@ class Engine(object):
             logger.error(str(e))
             return {}
 
-
-
-
     def rules_to_func_list(self):
         try:
             temp_list = []
             rules = self.read_rules()
+
             for rule in rules:
-                rule['func_list'] = []
-                for detect_item in rule['detect_list']:
+                temp_list.append(CheckUtil(rule))
 
-                    # if detect_item['type'] == 'in':
-                    #     rule['func_list'].append(check_in(res_parser(detect_item['field']), detect_item['field']))
-                    #
-                    # if detect_item['type'] == 're':
-                    #     rule['func_list'].append(check_re(res_parser(detect_item['field'])))
-
-
-                    print detect_item
-
-
-                    # temp_list.append(rule)
-
+            return temp_list
 
         except Exception as e:
             logger.error(str(e))
             return {}
 
+    def check_line(self, data):
 
+        for rule_func in self.rules_func_list:
 
-
-    def check_line(self):
-
-        pass
-
+            print rule_func.check_res(data)
 
 
 if __name__ == '__main__':
-    test= Engine(rule_type='HTTP')
+    test = Engine(rule_type='SSH')
+
+    data = {
+      "ts": 1586852099.89234,
+      "id.resp_h": "10.10.252.121",
+      "uid": "CtJwAA2XWyrbnfKztd",
+      "id.resp_p": 22,
+      "auth_attempts": 0,
+      "client": "SSH-2.0-Nmap-SSH2-Hostkey",
+      "id.orig_p": 56871,
+      "cipher_alg": "aes128-cbc",
+      "compression_alg": "none",
+      "mac_alg": "hmac-sha1",
+      "kex_alg": "diffie-hellman-group1-sha1",
+      "server": "SSH-2.0-OpenSSH_7.4",
+      "id.orig_h": "172.19.29.44",
+      "version": 2,
+      "host_key_alg": "Algorithm negotiation failed"
+    }
+
+    print test.check_line(data)
 
 
 
