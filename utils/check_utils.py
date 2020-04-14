@@ -15,9 +15,8 @@ logger = Logger.get_logger(__name__)
 
 class CheckUtil(object):
 
-    def __init__(self):
-
-        pass
+    def __init__(self, rule):
+        self.rule_ = rule
 
     def res_parser(self, res, field):
 
@@ -62,6 +61,30 @@ class CheckUtil(object):
         except Exception as e:
             logger.error(str(e))
             return False
+
+    def check_res(self, data):
+        #
+        # temp_list = []
+        # rules = self.read_rules()
+        # for rule in rules:
+        #     rule['func_list'] = []
+            for detect_item in self.rule_['detect_list']:
+
+            if self.rule_['type'] == 'in':
+                rule['func_list'].append(check_in(res_parser(detect_item['field']), detect_item['field']))
+
+            if self.rule_['type'] == 're':
+                rule['func_list'].append(check_re(res_parser(detect_item['field'])))
+
+            if self.rule_['type'] == 're':
+                rule['func_list'].append(check_re(res_parser(detect_item['field'])))
+
+
+
+
+
+
+
 
 
 

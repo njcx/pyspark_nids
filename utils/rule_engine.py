@@ -12,7 +12,7 @@ logger = Logger.get_logger(__name__)
 class Engine(object):
     def __init__(self, rule_type):
         self.rule_type = rule_type
-        self.rules_func_list= self.rules_to_func_list()
+        self.rules_func_list = self.rules_to_func_list()
 
 
     def read_rules(self):
