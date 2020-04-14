@@ -3,7 +3,7 @@
 # @Email   : njcx86@gmail.com
 
 from utils.json_ import json_file_to_py
-from utils.check_utils import check_in, check_re, check_equal, res_parser
+# from utils.check_utils import check_in, check_re, check_equal, res_parser
 from utils.log_ import Logger
 from settings import NidsHome
 logger = Logger.get_logger(__name__)
@@ -29,9 +29,19 @@ class Engine(object):
         try:
             temp_list = []
             rules = self.read_rules()
-            for rule in  rules:
+            for rule in rules:
+                rule['func_list'] = []
                 for detect_item in rule['detect_list']:
+
+                    # if detect_item['type'] == 'in':
+                    #     rule['func_list'].append(check_in(res_parser(detect_item['field']), detect_item['field']))
+                    #
+                    # if detect_item['type'] == 're':
+                    #     rule['func_list'].append(check_re(res_parser(detect_item['field'])))
+
+
                     print detect_item
+
 
                     # temp_list.append(rule)
 
