@@ -14,9 +14,8 @@ logger = Logger.get_logger(__name__)
 
 
 def check_in((res, pattern)):
-
     try:
-        return pattern in res
+        return str(pattern) in str(res).strip()
 
     except Exception as e:
         logger.error(str(e))
@@ -25,15 +24,25 @@ def check_in((res, pattern)):
 
 def check_equal(res, pattern):
     try:
-        return pattern == res
+        return str(pattern) == str(res).strip()
     except Exception as e:
         logger.error(str(e))
         return False
 
 
-def check_re((res, pattern)):
+def check_re(res, pattern, I=False):
 
-    pass
+    try:
+        if I:
+            re_utils = re.compile(pattern, re.I)
+            return re_utils.search(str(res).strip())
+        else:
+
+            re_utils = re.compile(pattern)
+            return re_utils.search(str(res).strip())
+    except Exception as e:
+        logger.error(str(e))
+        return False
 
 
 def res_parser(res, field):
