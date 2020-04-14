@@ -7,13 +7,14 @@ from pyspark import SparkConf
 from pyspark.streaming import StreamingContext
 from pyspark.streaming.kafka import KafkaUtils
 from settings import KafkaParams, SSHGroupId, SSHTopic, CheckPointDir, NidsAlertTopic, SparkLogLevel
-from utils import json_to_py
-from utils import KafkaTools
+from utils import json_to_py, KafkaTools, Engine
+
 
 
 
 def send_partition(iter):
     kafka_utils =KafkaTools(KafkaParams["metadata.broker.list"])
+    ssh_check = Engine(rule_type='SSH')
 
     for record in iter:
 
