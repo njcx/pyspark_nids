@@ -11,13 +11,12 @@ from utils import json_to_py
 from utils import KafkaTools
 
 
-rules = []
-
 
 def send_partition(iter):
     kafka_utils =KafkaTools(KafkaParams["metadata.broker.list"])
 
     for record in iter:
+
         kafka_utils.produce(NidsAlertTopic, record)
 
 

@@ -2,14 +2,11 @@
 # @Author  : nJcx
 # @Email   : njcx86@gmail.com
 
-
 from utils.log_ import Logger
-
 try:
     import re2 as re
 except ImportError:
     import re
-
 logger = Logger.get_logger(__name__)
 
 
@@ -27,14 +24,12 @@ class CheckUtil(object):
                 for _ in temp_:
                     res = res[_]
             return str(res).strip()
-
         except Exception as e:
             logger.error(str(e))
 
     def check_in(self, res, pattern):
         try:
             return str(pattern) in str(res).strip()
-
         except Exception as e:
             logger.error(str(e))
             return False
@@ -66,25 +61,19 @@ class CheckUtil(object):
                 if detect_item['type'] == 'in':
                     if self.check_in(self.res_parser(data, detect_item['field']), detect_item['rule']):
                         match_conut = match_conut + 1
-
                 if detect_item['type'] == 're' and detect_item['ignorecase'] == "False":
                     if self.check_re(self.res_parser(data, detect_item['field']), detect_item['rule']):
                         match_conut = match_conut + 1
-
                 if detect_item['type'] == 're' and detect_item['ignorecase'] == "True":
                     if self.check_re(self.res_parser(data, detect_item['field']), detect_item['rule'], I=True):
                         match_conut = match_conut + 1
-
                 if detect_item['type'] == 'equal':
                     if self.check_equal(self.res_parser(data, detect_item['field']), detect_item['rule']):
                         match_conut = match_conut + 1
-
             if self.rule_['rule_type'] == "and":
                 return match_conut == len(self.rule_['detect_list']), self.rule_
-
             if self.rule_['rule_type'] == "or":
                 return bool(match_conut), self.rule_
-
         except Exception as e:
             logger.error(str(e))
             return False

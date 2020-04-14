@@ -14,7 +14,6 @@ class Engine(object):
         self.rule_type = rule_type
         self.rules_func_list = self.rules_to_func_list()
 
-
     def read_rules(self):
         try:
             return json_file_to_py("{0}/rules/{1}.json".format(NidsHome, self.rule_type.lower()))
@@ -26,19 +25,22 @@ class Engine(object):
         try:
             temp_list = []
             rules = self.read_rules()
-
             for rule in rules:
                 temp_list.append(CheckUtil(rule))
-
             return temp_list
-
         except Exception as e:
             logger.error(str(e))
-            return {}
+        return temp_list
 
     def check_line(self, data):
-        for rule_func in self.rules_func_list:
-            print rule_func.check_res(data)
+        temp = []
+        try:
+            for rule_func in self.rules_func_list:
+                temp.append(rule_func.check_res(data))
+            return temp
+        except Exception as e:
+            logger.error(str(e))
+        return temp
 
 
 if __name__ == '__main__':
@@ -62,7 +64,7 @@ if __name__ == '__main__':
       "host_key_alg": "Algorithm negotiation failed"
     }
 
-    print test.check_line(data)
+    print(test.check_line(data))
 
 
 

@@ -34,7 +34,6 @@ class RedisTool(object):
             logger.error(str(e))
 
     def brpop(self, key, timeout):
-
         try:
             return self.r.brpop(key, timeout)
         except Exception as e:
@@ -59,14 +58,12 @@ class RedisTool(object):
             logger.error(str(e))
 
     def lindex(self, key, index):
-
         try:
             return self.r.lindex(key, index)
         except Exception as e:
             logger.error(str(e))
 
     def lrange(self, key, start, end):
-
         try:
             return self.r.lrange(key, start, end)
         except Exception as e:
