@@ -63,21 +63,35 @@ class CheckUtil(object):
             return False
 
     def check_res(self, data):
-        #
-        # temp_list = []
-        # rules = self.read_rules()
-        # for rule in rules:
-        #     rule['func_list'] = []
+        match_conut = 0
+        try:
+
             for detect_item in self.rule_['detect_list']:
+                if detect_item['type'] == 'in':
+                    if self.check_in(self.res_parser(data, detect_item['field']), detect_item['rule']):
+                        match_conut = match_conut +1
 
-            if self.rule_['type'] == 'in':
-                rule['func_list'].append(check_in(res_parser(detect_item['field']), detect_item['field']))
+                if detect_item['type'] == 're' and detect_item['ignorecase'] == "False":
+                    if self.check_re(self.res_parser(data, detect_item['field']), detect_item['rule']):
+                        match_conut = match_conut + 1
 
-            if self.rule_['type'] == 're':
-                rule['func_list'].append(check_re(res_parser(detect_item['field'])))
+                if detect_item['type'] == 'equal':
+                    if self.check_equal(self.res_parser(data, detect_item['field']), detect_item['rule']):
+                        match_conut = match_conut + 1
 
-            if self.rule_['type'] == 're':
-                rule['func_list'].append(check_re(res_parser(detect_item['field'])))
+            if self.rule_['rule_type'] == "and":
+                return match_conut == len(self.rule_['detect_list']), self.rule_
+
+            if self.rule_['rule_type'] == "or":
+                return bool(match_conut), self.rule_
+
+        except Exception as e:
+            logger.error(str(e))
+            return False
+
+
+
+
 
 
 
