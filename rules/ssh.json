@@ -12,8 +12,20 @@
                   "field" : "client",
                   "type": "in",
                   "rule":"Nmap"
-              }
+              },
 
+              {
+                  "field" : "id.orig_h",
+                  "type": "equal",
+                  "rule":"172.19.29.44"
+              },
+
+              {
+                  "field" : "client",
+                  "type": "re",
+                  "rule":"Nmap",
+                  "ignorecase": "False"
+              }
 
             ],
             "threat_level":"high",
