@@ -14,6 +14,11 @@ class CheckUtil(object):
 
     def __init__(self, rule):
         self.rule_ = rule
+        for detect_item in self.rule_['detect_list']:
+            if detect_item['type'] == 're' and detect_item['ignorecase'] == "True":
+                detect_item['rule'] = re.compile(detect_item['rule'], re.I)
+            if detect_item['type'] == 're' and detect_item['ignorecase'] == "False":
+                detect_item['rule'] = re.compile(detect_item['rule'])
 
     def res_parser(self, res, field):
         try:
@@ -41,14 +46,14 @@ class CheckUtil(object):
             logger.error(str(e))
             return False
 
-    def check_re(self, res, pattern, I=False):
+    def check_re(self, res, re_utils):
         try:
-            if I:
-                re_utils = re.compile(pattern, re.I)
-                return re_utils.search(str(res).strip())
-            else:
-                re_utils = re.compile(pattern)
-                return re_utils.search(str(res).strip())
+            # if I:
+            #     re_utils = re.compile(pattern, re.I)
+            return re_utils.search(str(res).strip())
+            # else:
+            #     re_utils = re.compile(pattern)
+            #     return re_utils.search(str(res).strip())
         except Exception as e:
             logger.error(str(e))
             return False
@@ -61,12 +66,12 @@ class CheckUtil(object):
                 if detect_item['type'] == 'in':
                     if self.check_in(self.res_parser(data, detect_item['field']), detect_item['rule']):
                         match_conut = match_conut + 1
-                if detect_item['type'] == 're' and detect_item['ignorecase'] == "False":
+                if detect_item['type'] == 're': #and detect_item['ignorecase'] == "False":
                     if self.check_re(self.res_parser(data, detect_item['field']), detect_item['rule']):
                         match_conut = match_conut + 1
-                if detect_item['type'] == 're' and detect_item['ignorecase'] == "True":
-                    if self.check_re(self.res_parser(data, detect_item['field']), detect_item['rule'], I=True):
-                        match_conut = match_conut + 1
+                # if detect_item['type'] == 're' and detect_item['ignorecase'] == "True":
+                #     if self.check_re(self.res_parser(data, detect_item['field']), detect_item['rule'], I=True):
+                #         match_conut = match_conut + 1
                 if detect_item['type'] == 'equal':
                     if self.check_equal(self.res_parser(data, detect_item['field']), detect_item['rule']):
                         match_conut = match_conut + 1
