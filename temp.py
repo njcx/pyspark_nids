@@ -3,40 +3,75 @@
 # @Email   : njcx86@gmail.com
 
 from pyspark import SparkContext
-from pyspark import SparkConf
+# from pyspark import SparkConf
 from pyspark.streaming import StreamingContext
 from pyspark.streaming.kafka import KafkaUtils
-from settings import KafkaParams, SSHGroupId, SSHTopic, CheckPointDir, NidsAlertTopic, SparkLogLevel
-from utils import json_to_py, KafkaTools, Engine
+from settings import KafkaParams, SSHGroupId, SSHTopic
+from utils import json_to_py
+
+offsets = []
+
+check_point_dir = "/tmp/spark_check_point"
 
 
+# def functionToCreateContext():
+#
+#     ssc.checkpoint(checkpointDirectory)  # set checkpoint directory
+#     return ssc
+#
+#
+# context = StreamingContext.getOrCreate(checkpointDirectory, functionToCreateContext)
 
-
-def send_partition(iter):
-    kafka_utils =KafkaTools(KafkaParams["metadata.broker.list"])
-    ssh_check = Engine(rule_type='SSH')
-
+def sendPartition(iter):
+    # ConnectionPool is a static, lazily initialized pool of connections
+    connection = ConnectionPool.getConnection()
     for record in iter:
+        connection.send(record)
+    # return to the pool for future reuse
+    ConnectionPool.returnConnection(connection)
 
-        kafka_utils.produce(NidsAlertTopic, record)
-
-
-def create_context():
-    sc_conf = SparkConf()
-    sc_conf.setAppName('sec-' + SSHTopic)
-    sc = SparkContext(conf=sc_conf)
-    sc.setLogLevel(SparkLogLevel)
-
-    ssc = StreamingContext(sc, 5)
-    msg_stream = KafkaUtils.createDirectStream(ssc, [SSHTopic],
-                                               kafkaParams=dict(KafkaParams, **{"group.id": SSHGroupId}))
-    msg_stream.checkpoint(20)
-    result = msg_stream.map(lambda x: json_to_py(x[1]))
-    result.foreachRDD(lambda rdd: rdd.foreachPartition(send_partition))
-    ssc.checkpoint(CheckPointDir)
-    return ssc
+dstream.foreachRDD(lambda rdd: rdd.foreachPartition(sendPartition))
 
 
-ssc = StreamingContext.getOrCreate(CheckPointDir, create_context)
+
+
+# def out_put(m):
+#     print(m)
+#
+#
+# def store_offset(rdd):
+#     global offsets
+#     offsets = rdd.offsetRanges()
+#     return rdd
+#
+#
+# def print_offset(rdd):
+#     for o in offsets:
+#         print "%s %s %s %s %s" % (o.topic, o.partition, o.fromOffset, o.untilOffset, o.untilOffset - o.fromOffset)
+
+
+# KafkaUtils.createStream(ssc, zkQuorum, "spark-streaming-consumer", {topic: 1})
+
+# config = SparkConf()
+sc = SparkContext(appName='sec-' + SSHTopic, )
+ssc = StreamingContext(sc, 2)
+
+ssc.checkpoint(check_point_dir)
+
+# lines = ssc.socketTextStream(...)  # create DStreams
+# ...
+
+msg_stream = KafkaUtils.createDirectStream(ssc, [SSHTopic],
+                                           kafkaParams=dict(KafkaParams, **{"group.id": SSHGroupId}))
+
+result = msg_stream.map(lambda x: json_to_py(x[1]))
+msg_stream.transform(store_offset, ).foreachRDD(print_offset)
+result.pprint()
+
+
+
+
 ssc.start()
 ssc.awaitTermination()
+
+
