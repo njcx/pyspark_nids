@@ -9,21 +9,21 @@ ssh = [
             "detect_list": [
 
               {
-                  "field" : "client",
+                  "field" : "ssh.client",
                   "type": "in",
-                  "rule":"Nmap"
+                  "rule":"SSH"
               },
 
-              {
-                  "field" : "id.orig_h",
-                  "type": "equal",
-                  "rule":"172.19.29.44"
-              },
+              # {
+              #     "field" : "ssh.id.orig_h",
+              #     "type": "equal",
+              #     "rule":"172.19.29.44"
+              # },
 
               {
-                  "field" : "client",
+                  "field" : "ssh.client",
                   "type": "re",
-                  "rule":"Nmap",
+                  "rule": "SSH",
                   "ignorecase": "False"
               }
 

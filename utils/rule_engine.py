@@ -48,23 +48,28 @@ if __name__ == '__main__':
     test = Engine(rule_type='SSH')
 
     data = {
-      "ts": 1586852099.89234,
-      "id.resp_h": "10.18.252.121",
-      "uid": "CtJwAA2XWyrbnfKztd",
-      "id.resp_p": 22,
-      "auth_attempts": 0,
-      "client": "SSH-2.0-Nmap-SSH2-Hostkey",
-      "id.orig_p": 56871,
+    "@timestamp": "2020-04-16T09:01:14.518Z",
+    "@version": "1",
+    "ssh": {
+      "auth_attempts": 1,
+      "uid": "CwUwXG2KseeiluBcyk",
+      "kex_alg": "diffie-hellman-group-exchange-sha256",
+      "host_key": "25:01:d0:55:76:bc:4c:87:96:62:1f:01:7b:29:d8:bd",
+      "mac_alg": "hmac-sha1",
+      "id.resp_h": "10.10.116.222",
       "cipher_alg": "aes128-cbc",
       "compression_alg": "none",
-      "mac_alg": "hmac-sha1",
-      "kex_alg": "diffie-hellman-group1-sha1",
-      "server": "SSH-2.0-OpenSSH_7.4",
-      "id.orig_h": "172.19.29.44",
+      "id.orig_h": "172.19.26.59",
+      "ts": 1587027674.10733,
+      "id.resp_p": 7999,
       "version": 2,
-      "host_key_alg": "Algorithm negotiation failed"
+      "id.orig_p": 62346,
+      "client": "SSH-2.0-OpenSSH_4.6",
+      "host_key_alg": "ssh-rsa",
+      "server": "SSH-2.0-OpenSSH_7.4",
+      "auth_success": "true"
     }
-
+  }
     print(test.check_line(data))
 
 

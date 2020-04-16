@@ -16,16 +16,16 @@ def send_partition(iter):
 
     kafka_utils =KafkaTools(KafkaParams["metadata.broker.list"])
     ssh_check = Engine(rule_type='SSH')
-
     for record in iter:
-        # logger.info(str(record))
-        # kafka_utils.produce(NidsAlertTopic, str(record))
-
-        if ssh_check.check_line(record) and ssh_check.check_line(record)[0]:
-
-            kafka_utils.produce(NidsAlertTopic, str(dict(record,
-            **{"rule": {key:ssh_check.check_line(record)[1][key] for key in ssh_check.check_line(record)[1]
-                        if key not in ['rule_type', 'detect_list']}})))
+        try:
+            if ssh_check.check_line(record): #and ssh_check.check_line(record)[0]:
+                for check_result in ssh_check.check_line(record):
+                    if check_result[0]:
+                        kafka_utils.produce(NidsAlertTopic, str(dict(record,
+                        **{"rule": {key: check_result[1][key] for key in check_result[1]
+                                    if key not in ['rule_type', 'detect_list']}})))
+        except Exception as e:
+            logger.error(str(e))
 
 
 # def create_context():
