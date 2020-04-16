@@ -2,11 +2,9 @@
 # @Author  : nJcx
 # @Email   : njcx86@gmail.com
 
-from utils.json_ import json_file_to_py
 from utils.check_utils import CheckUtil
 from utils.log_ import Logger
-import rules
-import os
+
 
 logger = Logger.get_logger(__name__)
 
@@ -18,7 +16,8 @@ class Engine(object):
 
     def read_rules(self):
         try:
-            return json_file_to_py("{0}/{1}.json".format(os.path.dirname(rules.__file__), self.rule_type.lower()))
+            rules = __import__('rules')
+            return getattr(rules, self.rule_type.lower())
         except Exception as e:
             logger.error(str(e))
             return {}
