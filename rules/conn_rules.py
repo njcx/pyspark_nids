@@ -108,11 +108,11 @@ conn = [
               ],
 
 
-              "key" :["", ""],
+              "key": ["", ""],
 
               "time_interval":{
                 "second": 10,
-                "times":100
+                "times": 100
               },
 
               "threat_level":"high",
