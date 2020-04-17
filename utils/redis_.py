@@ -12,10 +12,10 @@ logger = Logger.get_logger(__name__)
 
 class RedisTool(object):
 
-    def __init__(self, host='127.0.0.1', port=6379, password=None, db=0):
+    def __init__(self, password=None, host='127.0.0.1', port=6379, db=0):
         try:
 
-            redis_pool = redis.ConnectionPool(host=host, port=port, db=db, password=password, max_connections=20)
+            redis_pool = redis.ConnectionPool(host=host, port=port, db=db, password=password, max_connections=40)
             self.r = redis.Redis(connection_pool=redis_pool, decode_responses=True)
 
         except Exception as e:
@@ -142,6 +142,12 @@ class RedisTool(object):
     def hmget(self, key, key1):
         try:
             return self.r.hmget(key, key1)
+        except Exception as e:
+            logger.error(str(e))
+
+    def hgetall(self, key):
+        try:
+            return self.r.hgetall(key)
         except Exception as e:
             logger.error(str(e))
 

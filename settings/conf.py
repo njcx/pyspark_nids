@@ -5,7 +5,7 @@
 
 RedisHost = '172.21.129.2'
 RedisPort = 6379
-RedisPasswd = 'MAAp6aU6bG'
+RedisPasswd = 'fPGbAJ5uytTgqOiH'
 
 
 ArangoHost = '172.21.129.2'

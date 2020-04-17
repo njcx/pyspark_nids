@@ -5,34 +5,49 @@
 from pyspark import SparkContext
 from pyspark import SparkConf
 from pyspark.streaming import StreamingContext
-from pyspark.streaming.kafka import KafkaUtils
-from settings import KafkaParams, SSHGroupId, SSHTopic, CheckPointDir, NidsAlertTopic, SparkLogLevel
-from utils import json_to_py, py_to_json, KafkaTools, Engine
+from pyspark.streaming.kafka import KafkaUtils, TopicAndPartition
+from settings import KafkaParams, SSHGroupId, SSHTopic, NidsAlertTopic, SparkLogLevel, RedisPasswd, RedisHost
+from utils import json_to_py, py_to_json, KafkaTools, Engine, RedisTool
 from utils import Logger
 logger = Logger.get_logger(__name__)
 
 
+offsetRanges = []
+
+redis_utils = RedisTool(RedisPasswd, RedisHost)
+
+
 def get_offset_ranges(topic):
     ranges = None
-
-    rk = '{topic}:offsets'.format(topic=topic)
-    cache = redis.Redis()
-    if cache.exists(rk):
-        mapping = cache.hgetall(rk)
+    key = '{topic}:offsets'.format(topic=topic)
+    # cache = redis.Redis()
+    if redis_utils.exists(key):
+        mapping = redis_utils.hgetall(key)
         ranges = dict()
         for k, v in mapping.items():
             tp = TopicAndPartition(topic, int(k))
             ranges[tp] = long(v)
-
     return ranges
-
+#
 
 def update_offset_ranges(offset_ranges):
-    cache = redis.Redis()
-    for rng in offset_ranges:
-        rk = '{rng.topic}:offsets'.format(rng=rng)
-        print("updating redis_key: {}, partion:{} , lastOffset: {} ".format(rk, rng.partition, rng.untilOffset))
-        cache.hset(rk, rng.partition, rng.untilOffset)
+    # cache = redis.Redis()
+    for o in offsetRanges:
+        key = '{topic}:offsets'.format(topic=o.topic)
+        redis_utils.hset(key, o.partition, o.untilOffset)
+
+
+def storeOffsetRanges(rdd):
+    global offsetRanges
+    offsetRanges = rdd.offsetRanges()
+    return rdd
+
+
+def printOffsetRanges(rdd):
+    print rdd.count()
+    for o in offsetRanges:
+        print "%s %s %s %s" % (o.topic, o.partition, o.fromOffset, o.untilOffset)
+        logger.info("%s %s %s %s" % (o.topic, o.partition, o.fromOffset, o.untilOffset))
 
 
 def send_partition(iter):
@@ -60,8 +75,12 @@ ssc = StreamingContext(sc, 5)
 msg_stream = KafkaUtils.createDirectStream(ssc, [SSHTopic],
                                            kafkaParams=dict(KafkaParams, **{"group.id": SSHGroupId}))
 # msg_stream.checkpoint(20)
+
+msg_stream.transform(storeOffsetRanges).foreachRDD(update_offset_ranges)
 result = msg_stream.map(lambda x: json_to_py(x[1]))
 result.foreachRDD(lambda rdd: rdd.foreachPartition(send_partition))
+
+
     # ssc.checkpoint(CheckPointDir)
     # return ssc
 

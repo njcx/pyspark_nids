@@ -57,3 +57,4 @@ ssc = StreamingContext.getOrCreate(CheckPointDir, create_context)
 
 ssc.start()
 ssc.awaitTermination()
+
