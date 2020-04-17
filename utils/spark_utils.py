@@ -23,7 +23,7 @@ def get_offset_ranges(topic):
     return ranges
 
 
-def update_offset_ranges():
+def update_offset_ranges(rdd):
     for o in g_offset_ranges:
         key = '{topic}:offsets'.format(topic=o.topic)
         redis_utils.hset(key, o.partition, o.untilOffset)
