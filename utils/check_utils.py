@@ -10,6 +10,53 @@ except ImportError:
 logger = Logger.get_logger(__name__)
 
 
+def res_parser(res, field):
+    try:
+        if field in res:
+            return str(res[field]).strip()
+        else:
+            temp_ = field.split('.')
+            for _ in temp_:
+                res = res[_]
+        return str(res).strip()
+    except Exception as e:
+        logger.error(str(e))
+
+
+def check_in(res, pattern):
+    try:
+        return str(res).strip() in pattern
+    except Exception as e:
+        logger.error(str(e))
+        return False
+
+
+def check_equal(res, pattern):
+    try:
+        return str(pattern) == str(res).strip()
+    except Exception as e:
+        logger.error(str(e))
+        return False
+
+
+def check_re(res, re_utils):
+    try:
+        return re_utils.search(str(res).strip())
+    except Exception as e:
+        logger.error(str(e))
+        return False
+
+
+def check_custom_func(res, custom_func):
+    try:
+        rules = __import__('rules')
+        return getattr(rules, custom_func)(res)
+
+    except Exception as e:
+        logger.error(str(e))
+        return False
+
+
 class CheckUtil(object):
 
     def __init__(self, rule):
@@ -20,44 +67,6 @@ class CheckUtil(object):
             if detect_item['type'] == 're' and detect_item['ignorecase'] == "False":
                 detect_item['rule'] = re.compile(detect_item['rule'])
 
-    def res_parser(self, res, field):
-        try:
-            if field in res:
-                return str(res[field]).strip()
-            else:
-                temp_ = field.split('.')
-                for _ in temp_:
-                    res = res[_]
-            return str(res).strip()
-        except Exception as e:
-            logger.error(str(e))
-
-    def check_in(self, res, pattern):
-        try:
-            return  str(res).strip() in pattern
-        except Exception as e:
-            logger.error(str(e))
-            return False
-
-    def check_equal(self, res, pattern):
-        try:
-            return str(pattern) == str(res).strip()
-        except Exception as e:
-            logger.error(str(e))
-            return False
-
-    def check_re(self, res, re_utils):
-        try:
-            # if I:
-            #     re_utils = re.compile(pattern, re.I)
-            return re_utils.search(str(res).strip())
-            # else:
-            #     re_utils = re.compile(pattern)
-            #     return re_utils.search(str(res).strip())
-        except Exception as e:
-            logger.error(str(e))
-            return False
-
     def check_res(self, data):
         match_conut = 0
         white_item_conut = 0
@@ -65,7 +74,7 @@ class CheckUtil(object):
 
             if self.rule_['white_list']:
                 for white_item in self.rule_['white_list']:
-                    if self.check_in(self.res_parser(data, white_item['field']), white_item['rule']):
+                    if check_in(res_parser(data, white_item['field']), white_item['rule']):
                         white_item_conut = white_item_conut+1
 
                 if self.rule_['white_list_type'] == "and":
@@ -78,16 +87,14 @@ class CheckUtil(object):
 
             for detect_item in self.rule_['detect_list']:
                 if detect_item['type'] == 'in':
-                    if self.check_in(self.res_parser(data, detect_item['field']), detect_item['rule']):
+                    if check_in(res_parser(data, detect_item['field']), detect_item['rule']):
                         match_conut = match_conut + 1
-                if detect_item['type'] == 're': #and detect_item['ignorecase'] == "False":
-                    if self.check_re(self.res_parser(data, detect_item['field']), detect_item['rule']):
+                if detect_item['type'] == 're':
+                    if check_re(res_parser(data, detect_item['field']), detect_item['rule']):
                         match_conut = match_conut + 1
-                # if detect_item['type'] == 're' and detect_item['ignorecase'] == "True":
-                #     if self.check_re(self.res_parser(data, detect_item['field']), detect_item['rule'], I=True):
-                #         match_conut = match_conut + 1
+
                 if detect_item['type'] == 'equal':
-                    if self.check_equal(self.res_parser(data, detect_item['field']), detect_item['rule']):
+                    if check_equal(res_parser(data, detect_item['field']), detect_item['rule']):
                         match_conut = match_conut + 1
 
                 if detect_item['type'] == 'custom_func':
