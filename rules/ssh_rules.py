@@ -20,10 +20,10 @@ ssh = [
               },
 
               # {
-              #     "field" : "ssh.id.orig_h",
-              #     "type": "equal",
-              #     "rule":"172.19.29.44"
-              # },
+                #               #     "field" : "ssh.id.orig_h",
+                #               #     "type": "equal",
+                #               #     "rule":"172.19.29.44"
+                #               # },
 
               {
                   "field" : "ssh.client",
