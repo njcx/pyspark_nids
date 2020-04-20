@@ -1,3 +1,8 @@
+# -*- coding: utf-8 -*-
+# @Author  : nJcx
+# @Email   : njcx86@gmail.com
+
+
 ssh = [
     {
             "state": "enable",
@@ -11,7 +16,7 @@ ssh = [
               {
                   "field" : "ssh.client",
                   "type": "in",
-                  "rule":"SSH"
+                  "rule": "SSH"
               },
 
               # {
@@ -25,7 +30,13 @@ ssh = [
                   "type": "re",
                   "rule": "SSH",
                   "ignorecase": "False"
-              }
+              },
+
+                {
+                    "field": "ssh.client",
+                    "type": "custom_func",
+                    "rule": "SSH",
+                }
 
             ],
             "threat_level":"high",
