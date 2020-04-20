@@ -37,14 +37,11 @@ RedisTopic = "nids-redis"
 
 LogPath = '/tmp/'
 
-# CheckPointDir = "/tmp/spark_check_point"
-
 NidsAlertTopic = "nids_alert"
 
 KafkaParams = {"metadata.broker.list": "172.21.129.2:9092"}
 
 SparkLogLevel = "WARN"
 
-# NidsHome = "/data/nids_sec"
 
 

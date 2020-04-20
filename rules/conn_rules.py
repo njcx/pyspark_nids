@@ -14,9 +14,9 @@ conn = [
             "detect_list": [
 
               {
-                 "field" : "network.ip",
+                 "field": "network.ip",
                   "type": "re",
-                  "rule":"xxx",
+                  "rule": "xxx",
                   "ignorecase": "False"
 
               },
@@ -29,9 +29,9 @@ conn = [
 
 
               {
-                  "field" : "network.ip",
+                  "field": "network.ip",
                   "type": "in",
-                  "rule":100
+                  "rule": 100
               }
 
 
