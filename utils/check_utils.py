@@ -51,7 +51,6 @@ def check_custom_func(res, custom_func):
     try:
         rules = __import__('rules')
         return getattr(rules, custom_func)(res)
-
     except Exception as e:
         logger.error(str(e))
         return False
@@ -98,7 +97,7 @@ class CheckUtil(object):
                         match_conut = match_conut + 1
 
                 if detect_item['type'] == 'custom_func':
-                    # if self.check_equal(self.res_parser(data, detect_item['field']), detect_item['rule']):
+                    if check_custom_func(res_parser(data, detect_item['field']), detect_item['rule']):
                         match_conut = match_conut + 1
 
             if self.rule_['rule_type'] == "and":
