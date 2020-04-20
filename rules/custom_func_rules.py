@@ -6,3 +6,7 @@
 def haha(ck_field):
     if ck_field == 'xxx':
         return True
+
+
+def ssh_nmap_scan(ck_field):
+        return "SSH" in ck_field

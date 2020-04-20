@@ -9,15 +9,20 @@ ssh = [
             "rule_id": "sqli_get_01",
             "rule_tag": "sqli",
             "rule_name": "sqli_get_select",
-            "rule_type": "or",
+            "detect_rule_type": "or",
+            "white_list_type": "and",
+
+            "white_list": [
+
+            ],
 
             "detect_list": [
 
-              {
-                  "field" : "ssh.client",
-                  "type": "in",
-                  "rule": "SSH"
-              },
+              # {
+              #     "field" : "ssh|client",
+              #     "type": "in",
+              #     "rule": "SSH"
+              # },
 
               # {
                 #               #     "field" : "ssh.id.orig_h",
@@ -25,24 +30,24 @@ ssh = [
                 #               #     "rule":"172.19.29.44"
                 #               # },
 
-              {
-                  "field" : "ssh.client",
-                  "type": "re",
-                  "rule": "SSH",
-                  "ignorecase": "False"
-              },
+              # {
+              #     "field": "ssh|client",
+              #     "type": "re",
+              #     "rule": "SSH",
+              #     "ignorecase": "False"
+              # },
 
                 {
-                    "field": "ssh.client",
+                    "field": "ssh|client",
                     "type": "custom_func",
-                    "rule": "SSH",
+                    "rule": "ssh_nmap_scan",
                 }
 
             ],
-            "threat_level":"high",
-            "auth":"njcx",
+            "threat_level": "high",
+            "auth": "njcx",
             "info": "about sql injection attack",
-            "e-mail": ["xxx","xxx"]
+            "e-mail": ["xxx", "xxx"]
 
       }
 

@@ -15,7 +15,7 @@ def res_parser(res, field):
         if field in res:
             return str(res[field]).strip()
         else:
-            temp_ = field.split('.')
+            temp_ = field.split('|')
             for _ in temp_:
                 res = res[_]
         return str(res).strip()
@@ -100,9 +100,9 @@ class CheckUtil(object):
                     if check_custom_func(res_parser(data, detect_item['field']), detect_item['rule']):
                         match_conut = match_conut + 1
 
-            if self.rule_['rule_type'] == "and":
+            if self.rule_['detect_rule_type'] == "and":
                 return match_conut == len(self.rule_['detect_list']), self.rule_
-            if self.rule_['rule_type'] == "or":
+            if self.rule_['detect_rule_type'] == "or":
                 return bool(match_conut), self.rule_
         except Exception as e:
             logger.error(str(e))
