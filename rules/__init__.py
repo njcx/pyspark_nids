@@ -9,3 +9,5 @@ from conn_rules import *
 from redis_rules import *
 from mysql_rules import *
 from dns_rules import *
+from custom_func_rules import *
+

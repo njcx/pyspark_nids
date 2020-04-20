@@ -3,5 +3,6 @@
 # @Email   : njcx86@gmail.com
 
 
-def haha(test):
-    pass
+def haha(ck_field):
+    if ck_field == 'xxx':
+        return True

@@ -4,37 +4,60 @@ redis = [
             "rule_id": "sqli_get_01",
             "rule_tag": "sqli",
             "rule_name": "sqli_get_select",
-            "rule_type": "and",
+            "detect_rule_type": "and",
+            "white_list_type": "and",
+
+            "white_list": [
+                {
+                    "field": "network.ip",
+                    "type": "re",
+                    "rule": "xxx",
+                    "ignorecase": "False"
+
+                },
+
+                {
+                    "field": "network.ip",
+                    "type": "equal",
+                    "rule": "xxx"
+                },
+
+                {
+                    "field": "network.ip",
+                    "type": "in",
+                    "rule": [],
+                }
+            ],
 
             "detect_list": [
 
               {
-                 "field" : "network.ip",
+                 "field": "network.ip",
                   "type": "re",
-                  "rule":"xxx",
+                  "rule": "xxx",
                   "ignorecase": "False"
 
               },
 
               {
-                 "field" : "network.ip",
+                 "field": "network.ip",
                   "type": "equal",
-                  "rule":"xxx"
+                  "rule": "xxx"
               },
 
 
               {
-                  "field" : "network.ip",
-                  "type": "in",
-                  "rule":100
+                  "field":  "network.ip",
+                  "type":  "in",
+                  "rule": 100
               }
 
 
             ],
-            "threat_level":"high",
-            "auth":"njcx",
+            "threat_level": "high",
+            "auth": "njcx",
             "info": "about sql injection attack",
-            "e-mail": ["xxx","xxx"]
+            "e-mail": ["xxx", "xxx"]
 
       },
 

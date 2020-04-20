@@ -11,6 +11,8 @@ dns = [
             "rule_name": "sqli_get_select",
             "rule_type": "and",
 
+
+
             "detect_list": [
 
               {
