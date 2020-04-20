@@ -34,7 +34,7 @@ class CheckUtil(object):
 
     def check_in(self, res, pattern):
         try:
-            return str(pattern) in str(res).strip()
+            return  str(res).strip() in pattern
         except Exception as e:
             logger.error(str(e))
             return False
@@ -60,7 +60,21 @@ class CheckUtil(object):
 
     def check_res(self, data):
         match_conut = 0
+        white_item_conut = 0
         try:
+
+            if self.rule_['white_list']:
+                for white_item in self.rule_['white_list']:
+                    if self.check_in(self.res_parser(data, white_item['field']), white_item['rule']):
+                        white_item_conut = white_item_conut+1
+
+                if self.rule_['white_list_type'] == "and":
+                    if white_item_conut == len(self.rule_['white_list']):
+                        return False, None
+
+                if self.rule_['white_list_type'] == "or":
+                    if white_item_conut > 0:
+                        return False, None
 
             for detect_item in self.rule_['detect_list']:
                 if detect_item['type'] == 'in':
@@ -75,6 +89,11 @@ class CheckUtil(object):
                 if detect_item['type'] == 'equal':
                     if self.check_equal(self.res_parser(data, detect_item['field']), detect_item['rule']):
                         match_conut = match_conut + 1
+
+                if detect_item['type'] == 'custom_func':
+                    # if self.check_equal(self.res_parser(data, detect_item['field']), detect_item['rule']):
+                        match_conut = match_conut + 1
+
             if self.rule_['rule_type'] == "and":
                 return match_conut == len(self.rule_['detect_list']), self.rule_
             if self.rule_['rule_type'] == "or":

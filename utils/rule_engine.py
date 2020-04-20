@@ -4,8 +4,6 @@
 
 from utils.check_utils import CheckUtil
 from utils.log_ import Logger
-
-
 logger = Logger.get_logger(__name__)
 
 

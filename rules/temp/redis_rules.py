@@ -8,18 +8,17 @@ redis = [
             "white_list_type": "and",
 
             "white_list": [
+
                 {
                     "field": "network.ip",
-                    "type": "re",
-                    "rule": "xxx",
-                    "ignorecase": "False"
-
+                    "type": "in",
+                    "rule": [],
                 },
 
                 {
                     "field": "network.ip",
-                    "type": "equal",
-                    "rule": "xxx"
+                    "type": "in",
+                    "rule": [],
                 },
 
                 {
@@ -27,12 +26,13 @@ redis = [
                     "type": "in",
                     "rule": [],
                 }
+
             ],
 
             "detect_list": [
 
               {
-                 "field": "network.ip",
+                  "field": "network.ip",
                   "type": "re",
                   "rule": "xxx",
                   "ignorecase": "False"
@@ -40,7 +40,7 @@ redis = [
               },
 
               {
-                 "field": "network.ip",
+                  "field": "network.ip",
                   "type": "equal",
                   "rule": "xxx"
               },
@@ -50,7 +50,13 @@ redis = [
                   "field":  "network.ip",
                   "type":  "in",
                   "rule": 100
-              }
+              },
+
+                {
+                  "field": "network.ip",
+                  "type": "custom_func",
+                  "rule": "xxx_check"
+                }
 
 
             ],
