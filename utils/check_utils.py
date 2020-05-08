@@ -57,7 +57,6 @@ def check_custom_func(res, custom_func):
 
 
 class CheckUtil(object):
-
     def __init__(self, rule):
         self.rule_ = rule
         for detect_item in self.rule_['detect_list']:
@@ -70,20 +69,16 @@ class CheckUtil(object):
         match_conut = 0
         white_item_conut = 0
         try:
-
             if self.rule_['white_list']:
                 for white_item in self.rule_['white_list']:
                     if check_in(res_parser(data, white_item['field']), white_item['rule']):
                         white_item_conut = white_item_conut+1
-
                 if self.rule_['white_list_type'] == "and":
                     if white_item_conut == len(self.rule_['white_list']):
                         return False, None
-
                 if self.rule_['white_list_type'] == "or":
                     if white_item_conut > 0:
                         return False, None
-
             for detect_item in self.rule_['detect_list']:
                 if detect_item['type'] == 'in':
                     if check_in(res_parser(data, detect_item['field']), detect_item['rule']):
@@ -91,15 +86,12 @@ class CheckUtil(object):
                 if detect_item['type'] == 're':
                     if check_re(res_parser(data, detect_item['field']), detect_item['rule']):
                         match_conut = match_conut + 1
-
                 if detect_item['type'] == 'equal':
                     if check_equal(res_parser(data, detect_item['field']), detect_item['rule']):
                         match_conut = match_conut + 1
-
                 if detect_item['type'] == 'custom_func':
                     if check_custom_func(res_parser(data, detect_item['field']), detect_item['rule']):
                         match_conut = match_conut + 1
-
             if self.rule_['detect_rule_type'] == "and":
                 return match_conut == len(self.rule_['detect_list']), self.rule_
             if self.rule_['detect_rule_type'] == "or":
