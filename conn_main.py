@@ -36,6 +36,7 @@ offset_ranges = get_offset_ranges(ConnTopic)
 msg_stream = KafkaUtils.createDirectStream(ssc, [ConnTopic],
                                            kafkaParams=dict(KafkaParams, **{"group.id": ConnGroupId}),
                                            fromOffsets=offset_ranges)
+
 msg_stream.transform(store_offset_ranges).foreachRDD(update_offset_ranges)
 result = msg_stream.map(lambda x: json_to_py(x[1]))
 result.foreachRDD(lambda rdd: rdd.foreachPartition(send_partition))
