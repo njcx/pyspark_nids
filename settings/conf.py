@@ -5,13 +5,13 @@
 
 RedisHost = '172.21.129.2'
 RedisPort = 6379
-RedisPasswd = 'fPGbAJ5uytTgqOiH'
+RedisPasswd = '123456'
 
 
 ArangoHost = '172.21.129.2'
 ArangoPort = 8529
 ArangoUser = "root"
-ArangoPasswd = 'MAAp6aU6bG'
+ArangoPasswd = '123456'
 
 
 MySQLGroupId = "nids-mysql"
