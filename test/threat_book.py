@@ -16,7 +16,7 @@ header = {'content-type': 'application/json',
 
 api_url= "https://api.threatbook.cn/v3/scene/dns"
 
-api_key = 'b336fb5b547f429584f306b952725951ce9244afaeb9473a8c73e99095fa5d4d'
+api_key = '1111111111111111111111111111111'
 
 
 class ThreatBook(object):
