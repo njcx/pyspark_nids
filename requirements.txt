@@ -4,7 +4,7 @@ py2neo==4.3.0
 pyArango==1.3.4
 re2==0.2.24
 redis==3.4.1
-requests==2.23.0
+requests==2.31.0
 ujson==2.0.3
 
 
